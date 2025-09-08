@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Kitty IoT Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZjI4ODgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAgMjEuNWMwLTEuMi0xLjUtMi43LTMuNS01LjUtMi44IDMuNS01LjIgNS41LTguNSA1LjUtMi41IDAtMy41LS41LTMuNS0xLjVTNiAyMCAxMCAxOHMtNS41LTMtNS41LTUuNWMwLTUgMi41LTcgNy03czcgMiA3IDciPjwvcGF0aD48L3N2Zz4=" alt="Hello Kitty" width="30" height="30" class="d-inline-block align-text-top me-2">
+                Hello Kitty IoT Manager
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="bi bi-house-heart"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#dispositivos"><i class="bi bi-controller"></i> Dispositivos</a>
+                    </li>
+                              </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="monitor.html"><i class="bi bi-activity"></i> Monitor</a>
+          </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="container-fluid text-center py-5 mt-5">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Controlador de Dispositivos IoT</h1>
+            <p class="lead">Gestiona tus dispositivos IoT con estilo kawaii</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container my-5">
+        <section id="dispositivos" class="mb-5">
+            <h2 class="mb-4 text-center"><i class="bi bi-plus-circle"></i> Agregar Nuevo Comando</h2>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card form-card">
+                        <div class="card-body p-4">
+                            <form id="deviceForm">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nombre del Dispositivo</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Comando</label>
+                                    <select class="form-select" id="status" required>
+                                        <option value="" selected disabled>Selecciona un comando</option>
+                                        <option value="ADELANTE">ADELANTE</option>
+                                        <option value="ATRAS">ATRAS</option>
+                                        <option value="DETENER">DETENER</option>
+                                        <option value="ADELANTE DERECHA">ADELANTE DERECHA</option>
+                                        <option value="ADELANTE IZQUIERDA">ADELANTE IZQUIERDA</option>
+                                        <option value="ATRAS DERECHA">ATRAS DERECHA</option>
+                                        <option value="ATRAS IZQUIERDA">ATRAS IZQUIERDA</option>
+                                        <option value="GIRO 90 GRADOS DERECHA">GIRO 90 GRADOS DERECHA</option>
+                                        <option value="GIRO 90 GRADOS IZQUIERDA">GIRO 90 GRADOS IZQUIERDA</option>
+                                        <option value="GIRO 360 GRADOS DERECHA">GIRO 360 GRADOS DERECHA</option>
+                                        <option value="GIRO 360 GRADOS IZQUIERDA">GIRO 360 GRADOS IZQUIERDA</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ip" class="form-label">Dirección IP</label>
+                                    <input type="text" class="form-control" id="ip" placeholder="Ej: 192.168.1.1" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-send-plus"></i> Enviar Comando
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="mb-4 text-center"><i class="bi bi-list-check"></i> Últimos 5 Comandos</h2>
+            <div class="table-responsive">
+                <table class="table table-hover" id="devicesTable">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Comando</th>
+                            <th>IP</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="devicesTableBody">
+                        <!-- Los datos se cargarán aquí con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4">
+        <div class="container">
+            <p>Desarrollado con <i class="bi bi-balloon-heart-fill" style="color: #ff88aa;"></i> por [Tu Nombre]</p>
+            <div class="social-links">
+                <a href="#" class="text-decoration-none me-3"><i class="bi bi-github"></i></a>
+                <a href="#" class="text-decoration-none me-3"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="text-decoration-none"><i class="bi bi-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
