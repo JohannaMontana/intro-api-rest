@@ -29,6 +29,18 @@ function parseDate(dateStr) {
     return new Date(); // fallback si falla
 }
 
+// Obtener IP pública con ipify
+async function getPublicIP() {
+    try {
+        const response = await fetch("https://api.ipify.org?format=json");
+        const data = await response.json();
+        document.getElementById("ip").value = data.ip; // Rellenar input automáticamente
+    } catch (error) {
+        console.error("Error al obtener la IP:", error);
+        document.getElementById("ip").value = "No disponible";
+    }
+}
+
 // Función para cargar y mostrar los últimos 5 dispositivos
 async function loadDevices() {
     try {
@@ -102,6 +114,7 @@ async function addDevice(event) {
         if (response.ok) {
             alert('Comando enviado correctamente!');
             document.getElementById('deviceForm').reset();
+            getPublicIP(); // ✅ vuelve a poner la IP automáticamente
             loadDevices();
         } else {
             throw new Error('Error en la respuesta del servidor');
@@ -169,6 +182,7 @@ async function editDevice(id) {
                 if (updateResponse.ok) {
                     alert('Comando actualizado correctamente!');
                     form.reset();
+                    getPublicIP(); // ✅ vuelve a poner la IP automáticamente
                     form.onsubmit = addDevice;
                     loadDevices();
                 } else {
@@ -189,6 +203,7 @@ async function editDevice(id) {
 
 // Inicializar la aplicación cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', () => {
+    getPublicIP(); // ✅ obtiene IP automáticamente
     loadDevices();
     document.getElementById('deviceForm').addEventListener('submit', addDevice);
     setInterval(loadDevices, 30000);
