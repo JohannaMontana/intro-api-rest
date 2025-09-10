@@ -1,18 +1,32 @@
 const API_URL = 'https://68bb0de484055bce63f104ac.mockapi.io/api/v1/dispositivos_IoT';
 
-// Función para obtener la fecha actual en la zona horaria de Ciudad de México
-function getMexicoCityTime() {
-    const options = {
-        timeZone: 'America/Mexico_City',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    };
-    
-    return new Date().toLocaleString('es-MX', options);
+// Normaliza la fecha para que siempre devuelva un Date válido
+function parseDate(dateStr) {
+    const parsed = new Date(dateStr);
+    if (!isNaN(parsed)) {
+        return parsed;
+    }
+
+    // Intentar parsear formato local tipo "dd/mm/yyyy, hh:mm:ss a.m./p.m."
+    const regex = /(\d{1,2})\/(\d{1,2})\/(\d{4}), (\d{1,2}):(\d{2}):(\d{2}) (a\.m\.|p\.m\.)/i;
+    const match = dateStr.match(regex);
+
+    if (match) {
+        let [ , day, month, year, hour, minute, second, ampm ] = match;
+        day = parseInt(day, 10);
+        month = parseInt(month, 10) - 1; // JS months 0-11
+        year = parseInt(year, 10);
+        hour = parseInt(hour, 10);
+        minute = parseInt(minute, 10);
+        second = parseInt(second, 10);
+
+        if (ampm.toLowerCase().includes("p") && hour < 12) hour += 12;
+        if (ampm.toLowerCase().includes("a") && hour === 12) hour = 0;
+
+        return new Date(year, month, day, hour, minute, second);
+    }
+
+    return new Date(); // fallback si falla
 }
 
 // Función para cargar y mostrar los últimos 5 dispositivos
@@ -21,28 +35,28 @@ async function loadDevices() {
         const response = await fetch(API_URL);
         const devices = await response.json();
         
-        // Ordenar por fecha (más recientes primero) y tomar los últimos 5
-        const sortedDevices = devices.sort((a, b) => new Date(b.date) - new Date(a.date));
+        // Ordenar con fechas normalizadas
+        const sortedDevices = devices.sort((a, b) => parseDate(b.date) - parseDate(a.date));
         const lastFiveDevices = sortedDevices.slice(0, 5);
-        
+
         const tableBody = document.getElementById('devicesTableBody');
         tableBody.innerHTML = '';
-        
+
         lastFiveDevices.forEach(device => {
             const row = document.createElement('tr');
-            
-            // Aplicar estilo según el estado
+
+            // Colores de estado
             let statusClass = '';
             if (device.status.includes('ADELANTE')) statusClass = 'bg-success';
             else if (device.status.includes('ATRAS')) statusClass = 'bg-warning';
             else if (device.status === 'DETENER') statusClass = 'bg-danger';
             else statusClass = 'bg-info';
-            
+
             row.innerHTML = `
                 <td>${device.name}</td>
                 <td><span class="badge ${statusClass} status-badge">${device.status}</span></td>
                 <td>${device.ip}</td>
-                <td>${new Date(device.date).toLocaleString('es-MX')}</td>
+                <td>${parseDate(device.date).toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })}</td>
                 <td>
                     <button class="btn btn-sm btn-outline-primary btn-action" onclick="editDevice(${device.id})">
                         <i class="bi bi-pencil"></i>
@@ -52,7 +66,7 @@ async function loadDevices() {
                     </button>
                 </td>
             `;
-            
+
             tableBody.appendChild(row);
         });
     } catch (error) {
@@ -73,7 +87,7 @@ async function addDevice(event) {
         name,
         status,
         ip,
-        date: getMexicoCityTime()
+        date: new Date().toISOString() // ✅ Guardar siempre en ISO
     };
     
     try {
@@ -121,19 +135,17 @@ async function deleteDevice(id) {
     }
 }
 
-// Función para editar un dispositivo (modal de edición)
+// Función para editar un dispositivo
 async function editDevice(id) {
     try {
         const response = await fetch(`${API_URL}/${id}`);
         const device = await response.json();
         
-        // Aquí podrías implementar un modal para editar el dispositivo
-        // Por simplicidad, lo prellenamos en el formulario principal
+        // Prellenar el formulario
         document.getElementById('name').value = device.name;
         document.getElementById('status').value = device.status;
         document.getElementById('ip').value = device.ip;
         
-        // Cambiar el comportamiento del formulario para que actualice en lugar de crear
         const form = document.getElementById('deviceForm');
         form.onsubmit = async (e) => {
             e.preventDefault();
@@ -157,7 +169,7 @@ async function editDevice(id) {
                 if (updateResponse.ok) {
                     alert('Comando actualizado correctamente!');
                     form.reset();
-                    form.onsubmit = addDevice; // Restaurar el comportamiento original
+                    form.onsubmit = addDevice;
                     loadDevices();
                 } else {
                     throw new Error('Error al actualizar el dispositivo');
@@ -177,12 +189,7 @@ async function editDevice(id) {
 
 // Inicializar la aplicación cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', () => {
-    // Cargar dispositivos al iniciar
     loadDevices();
-    
-    // Configurar el evento de envío del formulario
     document.getElementById('deviceForm').addEventListener('submit', addDevice);
-    
-    // Actualizar cada 30 segundos
     setInterval(loadDevices, 30000);
 });

@@ -160,3 +160,17 @@ footer p {
         padding-top: 66px;
     }
 }
+
+#status {
+  background-color: #212529; /* gris oscuro */
+  color: white;
+  border: 1px solid #6c757d;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+/* Opciones internas */
+#status option {
+  background-color: #212529; /* mismo fondo */
+  color: white;
+}

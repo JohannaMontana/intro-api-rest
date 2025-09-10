@@ -40,14 +40,14 @@
     <header class="container-fluid text-center py-5 mt-5">
         <div class="container">
             <h1 class="display-4 fw-bold">Controlador de Dispositivos IoT</h1>
-            <p class="lead">Gestiona tus dispositivos IoT con estilo kawaii</p>
+            <p class="lead">Gestiona tus dispositivos IoT</p>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="container my-5">
         <section id="dispositivos" class="mb-5">
-            <h2 class="mb-4 text-center"><i class="bi bi-plus-circle"></i> Agregar Nuevo Comando</h2>
+            <h2 class="mb-4 text-center"><i class="bi bi-plus-circle"></i> Agregar nuevo dispositivo</h2>
             
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -59,9 +59,9 @@
                                     <input type="text" class="form-control" id="name" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="status" class="form-label">Comando</label>
+                                    <label for="status" class="form-label">Estado</label>
                                     <select class="form-select" id="status" required>
-                                        <option value="" selected disabled>Selecciona un comando</option>
+                                        <option value="" selected disabled>Selecciona un estado</option>
                                         <option value="ADELANTE">ADELANTE</option>
                                         <option value="ATRAS">ATRAS</option>
                                         <option value="DETENER">DETENER</option>
@@ -80,7 +80,7 @@
                                     <input type="text" class="form-control" id="ip" placeholder="Ej: 192.168.1.1" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">
-                                    <i class="bi bi-send-plus"></i> Enviar Comando
+                                    <i class="bi bi-send-plus"></i> Enviar
                                 </button>
                             </form>
                         </div>
@@ -90,7 +90,7 @@
         </section>
 
         <section>
-            <h2 class="mb-4 text-center"><i class="bi bi-list-check"></i> Últimos 5 Comandos</h2>
+            <h2 class="mb-4 text-center"><i class="bi bi-list-check"></i> Últimos 5 dispositivos</h2>
             <div class="table-responsive">
                 <table class="table table-hover" id="devicesTable">
                     <thead>
@@ -113,12 +113,7 @@
     <!-- Footer -->
     <footer class="text-center py-4">
         <div class="container">
-            <p>Desarrollado con <i class="bi bi-balloon-heart-fill" style="color: #ff88aa;"></i> por [Tu Nombre]</p>
-            <div class="social-links">
-                <a href="#" class="text-decoration-none me-3"><i class="bi bi-github"></i></a>
-                <a href="#" class="text-decoration-none me-3"><i class="bi bi-linkedin"></i></a>
-                <a href="#" class="text-decoration-none"><i class="bi bi-envelope"></i></a>
-            </div>
+            <p>Desarrollado con <i class="bi bi-balloon-heart-fill" style="color: #ff88aa;"></i> por Johanna</p>
         </div>
     </footer>
 
