@@ -43,12 +43,3 @@ Entender y practicar:
 - **Hosting**: GitHub Pages.
 
 ---
-
-## 📂 Estructura del proyecto
-intro-api-rest/
-│── index.html # Página principal con CRUD
-│── monitoring.html # Página de monitoreo (últimos 10 y último estado)
-│── css/
-│ └── style.css # Estilos personalizados
-│── js/
-│ └── app.js # Lógica de conexión y CRUD
